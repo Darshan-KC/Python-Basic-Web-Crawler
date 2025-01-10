@@ -3,6 +3,16 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 
+def fetch_page(url):
+    try:
+        response = requests.get(url, timeout=5)
+        if response.status_code == 200:
+            return response.text
+        return None
+    except requests.RequestException as e:
+        print(f"Error fetching {url}: {e}")
+        return None
+    
 def extract_links(html, base_url):
     soup = BeautifulSoup(html, 'html.parser')
     links = set()
