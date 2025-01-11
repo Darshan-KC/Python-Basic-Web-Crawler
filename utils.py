@@ -21,3 +21,10 @@ def extract_links(html, base_url):
         links.add(full_url)
     return links
 
+def is_same_domain(url, domain):
+    return urlparse(url).netloc == domain
+
+def save_results(urls, filename="crawled_urls.txt"):
+    with open(filename, "w") as f:
+        for url in sorted(urls):
+            f.write(url + "\n")
