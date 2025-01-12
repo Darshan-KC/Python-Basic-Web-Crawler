@@ -1,5 +1,7 @@
 # Main script to execute the crawler
 
+from utils import WebCrawler
+
 class Crawler:
     """
     A simple web crawler class to scrape content from a given URL.
@@ -18,7 +20,7 @@ class Crawler:
         Starts the crawling process by fetching the URL and parsing the content.
     """
     
-    def __init__(self, url):
+    def __init__(self, url, max_depth):
         """
         Initializes the Crawler object with the specified URL.
 
@@ -26,8 +28,12 @@ class Crawler:
         -----------
         url : str
             The URL of the website to be crawled.
+        
+        max_depth : int
+            Limit crawling depth to avoid overloading servers
         """
         self.url = url
+        self.max_depth = max_depth
         
     def crawl(self):
         """
@@ -42,11 +48,20 @@ class Crawler:
         print(f"Starting crawl on: {self.url}")
         # Placeholder for the actual crawling logic (HTTP request, parsing, etc.)
         # You would typically use requests, BeautifulSoup, etc. to implement the full crawling logic.
+        crawler = WebCrawler(self.start_url, self.max_depth)
+        crawled_urls = crawler.crawl()
+
+        # Save the results to a file
+        crawler.save_results("crawled_urls.txt", crawled_urls)
         
         
 def main():
     url = input("Enter the URL to crawl: ").strip()
-    crawler = Crawler(url)
+    
+    max_depth = input("Enter the max depth: ")
+    
+    crawler = Crawler(url,max_depth)
+    
     
     # Start the crawling process
     crawler.crawl()
